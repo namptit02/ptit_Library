@@ -1,517 +1,466 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta property="og:title" content="PTIT Library" />
-        <meta
-            property="og:description"
-            content="Ptiters are united by a share purpose"
-        />
-        <meta property="og:image" th:content="@{/images/icon.svg}" />
-        <meta property="og:type" content="website" />
-        <link rel="icon" th:href="@{/images/icon.svg}" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="PTIT Library" />
+    <meta property="og:description" content="Ptiters are united by a share purpose" />
+    <meta property="og:image" th:content="@{/images/icon.svg}" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" th:href="@{/images/icon.svg}" />
 
-        <title>PTIT Library - Messages</title>
+    <title>PTIT Library - Messages</title>
 
-        <link rel="stylesheet" th:href="@{/css/reset.css}" />
-        <link rel="stylesheet" th:href="@{/css/style.css}" />
-        <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <!-- Material Symbols (Google) -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-        <style>
-            .chat_area {
-                display: flex;
-                width: 100%;
-                margin: 0 128px;
-                gap: 64px;
-                margin-bottom: 64px;
-            }
-            .chat_box,
-            .chat_bar {
-                min-height: calc(100vh - 148px);
-            }
+    <style>
+      :root {
+        --primary-color: #e31e24;
+      }
 
-            .chat_bar {
-                width: 35%;
-            }
-            .chat_box {
-                height: 100%;
-                width: 65%;
-            }
+      /* Material Symbols helper */
+      .ms {
+        font-family: "Material Symbols Outlined";
+        font-weight: 400;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      .ms.lg {
+        font-size: 44px;
+      }
+      .ms.primary {
+        color: var(--primary-color);
+      }
 
-            .message_btn {
-                margin-left: 14px;
-            }
+      .chat_area {
+        display: flex;
+        width: 100%;
+        margin: 0 128px;
+        gap: 64px;
+        margin-bottom: 64px;
+      }
+      .chat_box,
+      .chat_bar {
+        min-height: calc(100vh - 148px);
+      }
+      .chat_bar {
+        width: 35%;
+      }
+      .chat_box {
+        height: 100%;
+        width: 65%;
+      }
 
-            .message_btn ul {
-                display: flex;
-                gap: 16px;
-            }
+      .message_btn {
+        margin-left: 14px;
+      }
+      .message_btn ul {
+        display: flex;
+        gap: 16px;
+      }
+      .message_btn li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+      }
+      .message_btn li span {
+        font-size: 1.6rem;
+        margin-top: 6px;
+        padding: 4px 12px;
+      }
+      .message_btn li span.focus {
+        color: #fff;
+        background-color: var(--primary-color);
+        border-radius: 6px;
+      }
 
-            .message_btn li {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                cursor: pointer;
-            }
+      .message_util {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .new_message {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+      .new_message span.txt {
+        font-size: 1.6rem;
+      }
+      .search_message {
+        cursor: pointer;
+      }
 
-            .message_btn li img {
-                height: 44px;
-                width: 44px;
-            }
+      .avatar {
+        width: 64px;
+        height: 64px;
+        background-color: #ccc;
+        background-size: cover;
+        background-position: center;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        opacity: 1;
+        flex-shrink: 0;
+      }
 
-            .message_btn li span {
-                font-size: 1.6rem;
-                margin-top: 3px;
-                padding: 4px 12px;
-            }
+      .list_friend_message {
+        margin-top: 12px;
+        border: 2px #f2f2f2 solid;
+        height: 412px;
+        overflow-y: auto;
+      }
+      .list_friend_message ul {
+        display: flex;
+        flex-direction: column;
+      }
+      .list_friend_message li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      .list_friend_message li + li {
+        border-top: 2px #f2f2f2 solid;
+      }
 
-            .message_btn li span.focus {
-                color: white;
-                background-color: var(--primary-color);
-            }
+      .message_content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex-grow: 1;
+        max-width: calc(100% - 76px);
+      }
+      .message_content img {
+        max-width: 50%;
+      }
 
-            .message_util {
-                margin-top: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
+      .message_row1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .fullname {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #08a569;
+      }
+      .message_sent_date {
+        font-size: 1.2rem;
+        color: #666;
+      }
 
-            .message_util img {
-                height: 24px;
-            }
+      .list_friend_message .text_message {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.6rem;
+        max-width: 100%;
+        padding: 2px 0;
+      }
+      .text_message.focus {
+        font-weight: 700;
+      }
 
-            .new_message {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                cursor: pointer;
-            }
+      .chat_container {
+        width: 100%;
+        min-height: 658px;
+        border: 2px #f2f2f2 solid;
+      }
 
-            .new_message span {
-                font-size: 1.6rem;
-            }
+      .message_header {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 48px;
+        background-color: var(--primary-color);
+      }
+      .message_header .info {
+        color: white;
+        font-size: 1.6rem;
+      }
+      .message_header .info i {
+        font-weight: 700;
+      }
 
-            .search_message {
-                cursor: pointer;
-            }
+      .message_controller {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+      }
 
-            .avatar {
-                width: 64px;
-                height: 64px;
-                background-color: #ccc;
-                background-size: cover;
-                background-position: center;
-                border-radius: 50%;
-                background-repeat: no-repeat;
-                opacity: 1;
-            }
-            .list_friend_message {
-                margin-top: 12px;
-                border: 2px #f2f2f2 solid;
-                height: 412px;
-                overflow-y: auto;
-            }
+      .main_chat {
+        height: 530px;
+        overflow-y: auto;
+      }
+      .main_chat ul {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+      }
+      .main_chat ul li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 8px 0 24px;
+        margin: 0 20px;
+        border-bottom: 2px #f2f2f2 solid;
+      }
+      .main_chat .text_message {
+        font-size: 1.6rem;
+        max-width: 100%;
+        padding: 2px 0;
+        line-height: 1.4;
+      }
 
-            .list_friend_message ul {
-                display: flex;
-                flex-direction: column;
-            }
-            .list_friend_message li {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 8px 12px;
-                cursor: pointer;
-            }
+      .compose_messsage {
+        padding: 12px 20px;
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+      }
+      .text-input {
+        margin-top: 8px;
+        resize: vertical;
+        flex-grow: 1;
+        max-width: 100%;
+        border: 1px #f2f2f2 solid;
+        padding: 8px 12px;
+        font-size: 1.6rem;
+        font-family: "Arial";
+        height: 48px;
+      }
 
-            .list_friend_message li:not(:nth-child(5)) {
-                border-bottom: 2px #f2f2f2 solid;
-            }
+      .preview-container {
+        margin-left: 92px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .preview-wrapper {
+        margin-top: 10px;
+        position: relative;
+        display: inline-block;
+      }
+      .preview-image {
+        max-width: 80px;
+        max-height: 80px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .remove-image-btn {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        cursor: pointer;
+      }
 
-            .message_content {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                flex-grow: 1;
-                max-width: calc(100% - 76px);
-            }
+      .search_member {
+        margin-left: 92px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .search_member span {
+        font-size: 1.6rem;
+      }
+      .search_member_btn {
+        position: relative;
+      }
+      .search_member_btn input {
+        padding-left: 28px;
+        height: 28px;
+        font-size: 1.4rem;
+      }
+      .search_member_btn .ms {
+        position: absolute;
+        left: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments/header :: header}"></div>
 
-            .message_content img {
-                max-width: 50%;
-            }
+    <div class="header">
+      <div class="main-content">
+        <div class="body">
+          <div class="chat_area">
+            <!-- Left column -->
+            <div class="chat_bar">
+              <div class="message_btn">
+                <ul>
+                  <li class="inbox_btn">
+                    <span class="ms lg primary">inbox</span>
+                    <span class="focus">Inbox</span>
+                  </li>
+                  <li class="unread_btn">
+                    <span class="ms lg">mark_email_unread</span>
+                    <span>Unread</span>
+                  </li>
+                </ul>
+              </div>
 
-            .message_row1 {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .fullname {
-                font-size: 1.6rem;
-                font-weight: 700;
-            }
-
-            .message_sent_date {
-                font-size: 1.2rem;
-            }
-
-            .list_friend_message .text_message {
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                font-size: 1.6rem;
-                max-width: 100%;
-                padding: 2px 0;
-            }
-
-            .text_message.focus {
-                font-weight: 700;
-            }
-
-            .chat_container {
-                width: 100%;
-                min-height: 658px;
-                border: 2px #f2f2f2 solid;
-            }
-
-            .message_header {
-                padding: 0 20px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                height: 48px;
-                background-color: var(--primary-color);
-            }
-
-            .message_header .info {
-                color: white;
-                font-size: 1.6rem;
-            }
-
-            .message_header .info i {
-                font-weight: 700;
-            }
-
-            .message_controller {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-
-            .main_chat {
-                height: 530px;
-                overflow-y: auto;
-            }
-
-            .main_chat ul {
-                margin-top: 12px;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .main_chat ul li {
-                display: flex;
-                gap: 12px;
-                align-items: flex-start;
-                padding: 8px 0;
-                padding-bottom: 24px;
-                margin: 0 20px;
-            }
-
-            .main_chat .text_message {
-                font-size: 1.6rem;
-                max-width: 100%;
-                padding: 2px 0;
-                line-height: 1.4;
-            }
-
-            .main_chat .message_row1 {
-                margin-top: 10px;
-            }
-
-            .main_chat li {
-                border-bottom: 2px #f2f2f2 solid;
-            }
-
-            .compose_messsage {
-                padding: 12px 20px;
-                display: flex;
-                gap: 8px;
-                width: 100%;
-                max-width: 100%;
-            }
-
-            .compose_messsage img {
-                margin-top: 10px;
-                height: 44px;
-            }
-
-            .text-input {
-                margin-top: 8px;
-                resize: vertical;
-                flex-grow: 1;
-                max-width: 100%;
-                border: 1px #f2f2f2 solid;
-                padding: 8px 12px;
-                font-size: 1.6rem;
-                font-family: "Arial";
-                height: 48px;
-            }
-
-            .msg_image {
-                margin-left: 92px;
-                padding-top: 12px;
-            }
-
-            .msg_image ul {
-                display: flex;
-                gap: 16px;
-            }
-
-            .msg_image li {
-                position: relative;
-            }
-
-            .msg_image img:first-child {
-                height: 32px;
-            }
-
-            .delete_img {
-                position: absolute;
-                right: -8px;
-                top: -8px;
-                width: 18px;
-                height: 18px;
-            }
-
-            .preview-container {
-                margin-left: 92px;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .preview-wrapper {
-                margin-top: 10px;
-                position: relative;
-                display: inline-block;
-            }
-
-            .preview-image {
-                max-width: 80px;
-                max-height: 80px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-
-            .remove-image-btn {
-                position: absolute;
-                top: -5px;
-                right: -5px;
-                background-color: red;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                font-size: 14px;
-                cursor: pointer;
-            }
-
-            .search_member {
-                margin-left: 92px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .search_member span {
-                font-size: 1.6rem;
-            }
-
-            .search_member_btn {
-                position: relative;
-            }
-
-            .search_member_btn input {
-                padding-left: 28px;
-                height: 28px;
-                font-size: 1.4rem;
-            }
-            .search_member_btn img {
-                position: absolute;
-                left: 4px;
-                top: 50%;
-                transform: translateY(-50%);
-            }
-        </style>
-    </head>
-    <body>
-        <div th:replace="~{fragments/header :: header}"></div>
-
-        <div class="header">
-            <div class="main-content">
-                <div class="body">
-                    <div class="chat_area">
-                        <div class="chat_bar">
-                            <div class="message_btn">
-                                <ul>
-                                    <li class="inbox_btn">
-                                        <img
-                                            th:src="@{/images/inbox-icon-red.svg}"
-                                            alt=""
-                                        /><span class="focus">Inbox</span>
-                                    </li>
-                                    <li class="unread_btn">
-                                        <img
-                                            th:src="@{/images/unread-icon-black.svg}"
-                                            alt=""
-                                        />
-                                        <span>Unread</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="message_util">
-                                <div class="new_message">
-                                    <img
-                                        th:src="@{/images/plus-icon.svg}"
-                                        alt=""
-                                    />
-                                    <span>New message</span>
-                                </div>
-                                <div class="search_message">
-                                    <img
-                                        th:src="@{/images/search-message-icon.svg}"
-                                        alt=""
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="list_friend_message">
-                                <ul></ul>
-                            </div>
-                        </div>
-                        <div class="chat_box">
-                            <div class="chat_container">
-                                <div class="message_header">
-                                    <span class="info"
-                                        >Nhắn tin tới
-                                        <i>Nguyễn Việt Huy</i></span
-                                    >
-                                    <div class="message_controller">
-                                        <img
-                                            th:src="@{/images/add-friend-icon.svg}"
-                                            alt=""
-                                        />
-                                        <img
-                                            th:src="@{/images/block-icon.svg}"
-                                            alt=""
-                                        />
-                                        <img
-                                            class="add-image-btn"
-                                            th:src="@{/images/erase-icon.svg}"
-                                            alt=""
-                                        />
-                                    </div>
-                                </div>
-                                <div class="main_chat">
-                                    <ul>
-                                        <li>
-                                            <div class="avatar"></div>
-                                            <div class="message_content">
-                                                <div class="message_row1">
-                                                    <span class="fullname"
-                                                        >Nguyễn Việt Huy</span
-                                                    >
-                                                    <span
-                                                        class="message_sent_date"
-                                                        >Nov 18, 2024</span
-                                                    >
-                                                </div>
-                                                <span class="text_message">
-                                                    Hey there! Just a little
-                                                    reminder that today is a
-                                                    perfect day to embrace new
-                                                    challenges and let your
-                                                    creativity shine.
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div
-                                    class="search_member"
-                                    style="display: none"
-                                >
-                                    <span>Gửi đến: </span>
-                                    <div class="search_member_btn">
-                                        <input type="text" id="searchInput" />
-                                        <img
-                                            th:src="@{/images/search-message-icon.svg}"
-                                            alt=""
-                                        />
-                                    </div>
-                                </div>
-                                <div
-                                    class="preview-container"
-                                    id="preview-container"
-                                ></div>
-                                <div class="compose_messsage">
-                                    <div class="avatar"></div>
-                                    <textarea
-                                        class="text-input"
-                                        id="messageInput"
-                                        placeholder="Viết tin nhắn của bạn..."
-                                        onkeydown="sendOnEnter(event)"
-                                    ></textarea>
-                                    <img
-                                        th:src="@{/images/img-icon.svg}"
-                                        alt=""
-                                        onclick="document.getElementById('file-input').click()"
-                                    />
-                                    <input
-                                        type="file"
-                                        id="file-input"
-                                        style="display: none"
-                                        accept="image/*"
-                                        multiple
-                                        onchange="previewImages(event)"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div class="message_util">
+                <div class="new_message">
+                  <span class="ms">add</span>
+                  <span class="txt">New message</span>
                 </div>
+                <div class="search_message">
+                  <span class="ms">search</span>
+                </div>
+              </div>
+
+              <div class="list_friend_message">
+                <ul></ul>
+              </div>
             </div>
+
+            <!-- Right column -->
+            <div class="chat_box">
+              <div class="chat_container">
+                <div class="message_header">
+                  <span class="info">Nhắn tin tới <i>Nguyễn Việt Huy</i></span>
+                  <div class="message_controller">
+                    <span class="ms">person_add</span>
+                    <span class="ms">block</span>
+                    <span class="ms">ink_eraser</span>
+                  </div>
+                </div>
+
+                <div class="main_chat">
+                  <ul>
+                    <li>
+                      <div class="avatar" data-name="Nguyễn Việt Huy"></div>
+                      <div class="message_content">
+                        <div class="message_row1">
+                          <span class="fullname">Nguyễn Việt Huy</span>
+                          <span class="message_sent_date">Nov 18, 2024</span>
+                        </div>
+                        <span class="text_message">
+                          Hey there! Just a little reminder that today is a perfect day to embrace new challenges and
+                          let your creativity shine.
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="search_member" style="display: none">
+                  <span>Gửi đến: </span>
+                  <div class="search_member_btn">
+                    <input type="text" id="searchInput" />
+                    <span class="ms">search</span>
+                  </div>
+                </div>
+
+                <div class="preview-container" id="preview-container"></div>
+
+                <div class="compose_messsage">
+                  <div class="avatar" data-name="[[${session.username}]]"></div>
+                  <textarea
+                    class="text-input"
+                    id="messageInput"
+                    placeholder="Viết tin nhắn của bạn..."
+                    onkeydown="sendOnEnter(event)"
+                  ></textarea>
+
+                  <!-- icon chọn ảnh -->
+                  <span class="ms" onclick="document.getElementById('file-input').click()">image</span>
+                  <input
+                    type="file"
+                    id="file-input"
+                    style="display: none"
+                    accept="image/*"
+                    multiple
+                    onchange="previewImages(event)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div th:replace="~{fragments/footer :: footer}"></div>
-        
-        <script th:src="@{/js/jquery3.6.0.js}"></script>
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            var sender = /*[[${session.username}]]*/ '';
-            console.log("SENDER = " + sender);
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-            // WebSocket connection will be established here
-            const ws = new WebSocket(
-                `ws://localhost:8080/chat?username=${sender}`
-            );
+    <script th:src="@{/js/jquery3.6.0.js}"></script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      // Lấy username từ session (Thymeleaf)
+      var sender = /*[[${session.username}]]*/ "";
 
-            // Add message handling logic from the original JSP file here
-            // ...
+      // 1) Đặt avatar placeholder (DiceBear) cho mọi .avatar nếu có data-name
+      document.querySelectorAll(".avatar").forEach((el) => {
+        const name = el.getAttribute("data-name") || sender || "Guest";
+        const url = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
+          name
+        )}&backgroundType=solid&backgroundColor=cad2d2`;
+        // Nếu chưa có background-image thì set
+        const styleBg = (el.style.backgroundImage || "").trim();
+        if (!styleBg || styleBg === "none") {
+          el.style.backgroundImage = `url('${url}')`;
+        }
+      });
 
-            /*]]>*/
-        </script>
-    </body>
+      // 2) WebSocket (raw) – chỉ giữ nguyên như bạn đang dùng
+      const ws = new WebSocket(`ws://localhost:8080/chat?username=${encodeURIComponent(sender)}`);
+
+      ws.onopen = () => console.log("WS connected");
+      ws.onmessage = (e) => {
+        // TODO: parse và append ra UI của bạn
+        try {
+          const msg = JSON.parse(e.data);
+          console.log("recv:", msg);
+        } catch {
+          console.log("recv (text):", e.data);
+        }
+      };
+      ws.onclose = () => console.log("WS closed");
+
+      function sendOnEnter(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          const input = document.getElementById("messageInput");
+          const text = (input.value || "").trim();
+          if (!text) return;
+          ws.send(JSON.stringify({ sender, content: text, ts: Date.now() }));
+          input.value = "";
+        }
+      }
+
+      function previewImages(e) {
+        /* để trống nếu chưa xử lý upload */
+      }
+      /*]]>*/
+    </script>
+  </body>
 </html>
