@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!-- Header Fragment -->
+<nav th:fragment="header">
+    <div class="main-content">
+        <div class="body" style="padding-top: 8px; height: 76px; background: #fff">
+            <div class="logo" style="
+                    background: url(/images/logo-1.svg);
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position-y: 50%;
+                    width: calc(2.251 * 76px);
+                    height: 76px;
+                "></div>
+
+            <ul>
+                <li>
+                    <a href="#!">Tài liệu chuyên ngành</a>
+                </li>
+
+                <li th:if="${session.role == 'librarian'}">
+                    <a th:href="@{/management}">Quản lý</a>
+                </li>
+                
+                <li><a th:href="@{/book/borrow}">Mượn sách</a></li>
+                <li>
+                    <a th:href="@{/ranking}">Xếp hạng</a>
+                </li>
+                <li><a th:href="@{/message}">Nhắn tin</a></li>
+            </ul>
+
+            <div class="search" style="margin-left: 30px">
+                <span class="material-symbols-outlined" style="font-size: 26px">
+                    search
+                </span>
+            </div>
+            <div class="language" style="
+                    position: relative;
+                    display: flex;
+                    margin-left: auto;
+                    align-items: center;
+                    gap: 12px;
+                ">
+                <div class="notification">
+                    <img th:src="@{/images/notification-icon.svg}" alt=""/>
+                </div>
+
+                <div class="notification-container">
+                    <span style="
+                            display: block;
+                            font-size: 2.2rem;
+                            font-weight: 400;
+                            padding: 12px;
+                        ">Thông báo</span>
+
+                    <ul th:attr="data-student_id=${session.username}">
+                        <li>
+                            <img th:src="@{/images/msg-noti-icon.svg}" alt="" />
+                            <span class="noti-header" style="font-weight: 400">Bạn có 5 tin nhắn mới</span>
+                            <span class="noti-content"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <a th:href="@{/user/profile}" class="username" style="position: relative">
+                    <span style="font-size: 18px; padding: 24px 0">
+                        Hello, <span th:text="${session.username}">username</span>
+                    </span>
+                </a>
+
+                <div style="
+                        position: absolute;
+                        top: 52px;
+                        right: 0;
+                        padding: 16px 0;
+                        padding-left: 20px;
+                        padding-right: 60px;
+                        background-color: white;
+                        border: 1px #ccc solid;
+                        border-top: 7px var(--primary-color) solid;
+                        pointer-events: auto;
+                    " class="tab">
+                    <div style="
+                            display: flex;
+                            flex-direction: column;
+                            margin: 0;
+                            gap: 12px;
+                        ">
+                        <a th:href="@{/user/profile}" style="
+                                font-size: 16px;
+                                font-weight: 400;
+                                text-decoration: underline;
+                            ">Profile</a>
+                        <form id="logoutForm" th:action="@{/user/logout}" action="/user/logout" method="post">
+                            <button type="submit" class="log_out" style="
+                                    background: none;
+                                    border: none;
+                                    padding: 0;
+                                    font-size: 1.6rem;
+                                    opacity: 0.87;
+                                    text-decoration: underline;
+                                    cursor: pointer;
+                                    text-align: left;
+                                ">Log out</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="ulti">
+    <div class="main-content">
+        <div class="body" style="margin-top: 18px">
+            <div class="breadcrumb">
+                <ul style="display: flex; align-items: center; gap: 8px">
+                    <li>
+                        <a th:href="@{/}">
+                            <span class="material-symbols-outlined" style="font-size: 26px">
+                                home_pin
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}">PTIT Library</a>
+                    </li>
+                    <li>
+                        <a href="#!">Tài liệu chuyên ngành</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery3.6.0.js}"></script>
+
+<script>
+    var noti_container = document.querySelector(".notification-container ul");
+    var username_account = noti_container.dataset.student_id;
+    console.log("USERNAME ACCOUNT = " + username_account);
+    
+    $.ajax({
+        url: "/notification",
+        type: "GET",
+        dataType: "json",
+        data: {
+            student_id: username_account,
+        },
+        success: function (data) {
+            console.log(data);
+            
+            data.forEach((noti) => {
+                noti_container.insertAdjacentHTML(
+                    "beforeend",
+                    `
+                    <li>
+                        <img src="/images/` + noti.icon + `" alt="" />
+                        <div>
+                            <span class="noti-header">` + noti.notificationType + `</span>
+                            <span class="noti-content">` + noti.message + `</span>
+                        </div>
+                    </li>
+                    `
+                );
+            });
+        },
+    });
+</script>
+
+</body>
+</html>

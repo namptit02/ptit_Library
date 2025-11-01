@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content="PTIT Library" />
+        <meta
+            property="og:description"
+            content="Ptiters are united by a share purpose"
+        />
+        <meta property="og:image" th:content="@{/images/icon.svg}" />
+        <meta property="og:type" content="website" />
+        <link rel="icon" th:href="@{/images/icon.svg}" />
+
+        <title>PTIT Library - Error</title>
+
+        <link rel="stylesheet" th:href="@{/css/reset.css}" />
+        <link rel="stylesheet" th:href="@{/css/style.css}" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+    </head>
+
+    <style>
+        .header .body {
+            min-height: calc(100vh - 148px);
+        }
+
+        .error-message {
+            margin: 0 auto;
+            margin-top: 72px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btnReturnHome {
+            height: 36px;
+            width: fit-content;
+            padding: 0 16px;
+            background-color: var(--primary-color);
+        }
+
+        .btnReturnHome span {
+            font-size: 16px;
+            line-height: 36px;
+            color: white;
+        }
+    </style>
+    <body>
+        <div th:replace="~{fragments/header :: header}"></div>
+        
+        <div class="header">
+            <div class="main-content">
+                <div class="body">
+                    <div class="error-message">
+                        <span style="font-size: 22px" th:text="${errorCode != null ? errorCode : '404 Not Found'}">404 Not Found</span>
+                        <span style="font-size: 16px; opacity: 0.72" th:text="${errorMessage != null ? errorMessage : 'Nội dung mà bạn đang tìm kiếm không tồn tại'}">
+                            Nội dung mà bạn đang tìm kiếm không tồn tại
+                        </span>
+                        <a th:href="@{/}">
+                            <div class="btnReturnHome">
+                                <span>Quay trở về trang chủ</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </body>
+</html>
