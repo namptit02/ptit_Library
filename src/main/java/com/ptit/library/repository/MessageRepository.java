@@ -13,14 +13,16 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     
     @Query("SELECT m FROM Message m WHERE " +
            "(m.senderId = :userId OR m.receiverId = :userId) " +
-           "ORDER BY m.timestamp DESC")
+           "ORDER BY m.createdAt DESC")
     List<Message> findMessagesByUserId(@Param("userId") String userId);
-    
-    @Query("SELECT m FROM Message m WHERE " +
-           "(m.senderId = :user1 AND m.receiverId = :user2) OR " +
-           "(m.senderId = :user2 AND m.receiverId = :user1) " +
-           "ORDER BY m.timestamp ASC")
-    List<Message> findConversation(@Param("user1") String user1, @Param("user2") String user2);
-    
+
+    @Query("""
+        SELECT m FROM Message m
+        WHERE (m.senderId = :u1 AND m.receiverId = :u2)
+           OR (m.senderId = :u2 AND m.receiverId = :u1)
+        ORDER BY m.createdAt ASC
+    """)
+    List<Message> findConversation(@Param("u1") String u1, @Param("u2") String u2);
+
     List<Message> findByReceiverIdAndIsReadFalse(String receiverId);
 }

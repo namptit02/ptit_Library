@@ -38,6 +38,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/", "/auth", "/user/login", "/user/register", "/book/borrow").permitAll()
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/data/**").permitAll()
+                // Cho phép endpoint websocket/SockJS
+                .requestMatchers("/ws/**").permitAll()
+                // (optional) nếu bạn expose REST lấy hội thoại, unread:
+                .requestMatchers("/api/messages/**").authenticated()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())

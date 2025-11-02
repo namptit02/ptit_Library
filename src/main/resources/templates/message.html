@@ -1,466 +1,616 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="PTIT Library" />
-    <meta property="og:description" content="Ptiters are united by a share purpose" />
-    <meta property="og:image" th:content="@{/images/icon.svg}" />
-    <meta property="og:type" content="website" />
-    <link rel="icon" th:href="@{/images/icon.svg}" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="PTIT Library" />
+  <meta property="og:description" content="Ptiters are united by a share purpose" />
+  <meta property="og:image" th:content="@{/images/icon.svg}" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" th:href="@{/images/icon.svg}" />
+  <title>PTIT Library - Messages</title>
 
-    <title>PTIT Library - Messages</title>
+  <link rel="stylesheet" th:href="@{/css/reset.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
-    <link rel="stylesheet" th:href="@{/css/reset.css}" />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <!-- Material Symbols (Google) -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+    :root { --primary-color: #e31e24; }
+    .ms { font-family:"Material Symbols Outlined"; font-weight:400; font-style:normal; font-size:24px; line-height:1; display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; font-variation-settings:"FILL"0,"wght"400,"GRAD"0,"opsz"24; }
+    .ms.lg { font-size:44px; }
+    .ms.primary { color:var(--primary-color); }
+    .badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 6px; font-size:12px; border-radius:10px; background:#ff3b30; color:#fff; font-weight:700; }
+    .hide { display:none!important; }
 
-    <style>
-      :root {
-        --primary-color: #e31e24;
-      }
+    .chat_area { display:flex; width:100%; margin:0 128px; gap:64px; margin-bottom:64px; }
+    .chat_box,.chat_bar { min-height:calc(100vh - 148px); }
+    .chat_bar { width:35%; }
+    .chat_box { width:65%; }
 
-      /* Material Symbols helper */
-      .ms {
-        font-family: "Material Symbols Outlined";
-        font-weight: 400;
-        font-style: normal;
-        font-size: 24px;
-        line-height: 1;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        vertical-align: middle;
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-      .ms.lg {
-        font-size: 44px;
-      }
-      .ms.primary {
-        color: var(--primary-color);
-      }
+    .message_btn { margin-left:14px; }
+    .message_btn ul { display:flex; gap:16px; }
+    .message_btn li { display:flex; flex-direction:column; align-items:center; cursor:pointer; position:relative; }
+    .message_btn li span { font-size:1.6rem; margin-top:6px; padding:4px 12px; }
+    .message_btn li span.focus { color:#fff; background-color:var(--primary-color); border-radius:6px; }
+    .message_btn .badge { position:absolute; top:-6px; right:-10px; }
 
-      .chat_area {
-        display: flex;
-        width: 100%;
-        margin: 0 128px;
-        gap: 64px;
-        margin-bottom: 64px;
-      }
-      .chat_box,
-      .chat_bar {
-        min-height: calc(100vh - 148px);
-      }
-      .chat_bar {
-        width: 35%;
-      }
-      .chat_box {
-        height: 100%;
-        width: 65%;
-      }
+    .message_util { margin-top:20px; display:flex; align-items:center; justify-content:space-between; }
+    .action_group { display:flex; align-items:center; gap:12px; }
+    .action { display:inline-flex; align-items:center; gap:8px; cursor:pointer; }
+    .action span.txt { font-size:1.6rem; }
 
-      .message_btn {
-        margin-left: 14px;
-      }
-      .message_btn ul {
-        display: flex;
-        gap: 16px;
-      }
-      .message_btn li {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-      }
-      .message_btn li span {
-        font-size: 1.6rem;
-        margin-top: 6px;
-        padding: 4px 12px;
-      }
-      .message_btn li span.focus {
-        color: #fff;
-        background-color: var(--primary-color);
-        border-radius: 6px;
-      }
+    .avatar { width:48px; height:48px; background:#ccc center/cover no-repeat; border-radius:50%; flex-shrink:0; }
 
-      .message_util {
-        margin-top: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .new_message {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-      }
-      .new_message span.txt {
-        font-size: 1.6rem;
-      }
-      .search_message {
-        cursor: pointer;
-      }
+    .panel { border:2px #f2f2f2 solid; margin-top:12px; }
+    .panel_header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#fafafa; border-bottom:2px #f2f2f2 solid; }
+    .panel_header .title { font-weight:700; font-size:1.6rem; }
+    .panel_body { max-height:180px; overflow-y:auto; }
+    .panel_body ul { display:flex; flex-direction:column; }
+    .panel_body li { display:flex; align-items:center; gap:8px; padding:8px 12px; }
+    .panel_body li+li { border-top:1px solid #f0f0f0; }
+    .panel_actions { margin-left:auto; display:flex; gap:8px; }
+    .btn { border:1px solid #ddd; border-radius:6px; padding:4px 8px; font-size:1.3rem; cursor:pointer; background:#fff; }
+    .btn.primary { background:var(--primary-color); color:#fff; border-color:var(--primary-color); }
 
-      .avatar {
-        width: 64px;
-        height: 64px;
-        background-color: #ccc;
-        background-size: cover;
-        background-position: center;
-        border-radius: 50%;
-        background-repeat: no-repeat;
-        opacity: 1;
-        flex-shrink: 0;
-      }
+    .list_friend_message { border:2px #f2f2f2 solid; margin-top:12px; height:360px; overflow-y:auto; }
+    .list_friend_message ul { display:flex; flex-direction:column; }
+    .list_friend_message li { display:flex; align-items:center; gap:12px; padding:10px 12px; cursor:pointer; }
+    .list_friend_message li+li { border-top:2px #f2f2f2 solid; }
+    .friend-item { position:relative; }
+    .friend-item .right { display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
+    .friend-name { font-size:1.6rem; font-weight:700; color:#333; display:flex; align-items:center; gap:6px; }
+    .friend-last { font-size:1.4rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .friend-last.unread { color:#d10000; font-weight:700; }
+    .friend-last.read { color:#111; font-weight:400; }
+    .friend-unread-badge { position:absolute; top:8px; right:8px; }
 
-      .list_friend_message {
-        margin-top: 12px;
-        border: 2px #f2f2f2 solid;
-        height: 412px;
-        overflow-y: auto;
-      }
-      .list_friend_message ul {
-        display: flex;
-        flex-direction: column;
-      }
-      .list_friend_message li {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 8px 12px;
-        cursor: pointer;
-      }
-      .list_friend_message li + li {
-        border-top: 2px #f2f2f2 solid;
-      }
+    .message_content { display:flex; flex-direction:column; gap:10px; flex-grow:1; max-width:calc(100% - 60px); }
+    .message_row1 { display:flex; align-items:center; justify-content:space-between; }
+    .fullname { font-size:1.6rem; font-weight:700; color:#08a569; }
+    .message_sent_date { font-size:1.2rem; color:#666; }
 
-      .message_content {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        flex-grow: 1;
-        max-width: calc(100% - 76px);
-      }
-      .message_content img {
-        max-width: 50%;
-      }
+    .chat_container { width:100%; min-height:658px; border:2px #f2f2f2 solid; }
+    .message_header { padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:48px; background:var(--primary-color); }
+    .message_header .info { color:white; font-size:1.6rem; }
 
-      .message_row1 {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .fullname {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: #08a569;
-      }
-      .message_sent_date {
-        font-size: 1.2rem;
-        color: #666;
-      }
+    .main_chat { height:530px; overflow-y:auto; }
+    .main_chat ul { margin-top:12px; display:flex; flex-direction:column; }
+    .main_chat ul li { display:flex; gap:12px; align-items:flex-start; padding:8px 0 24px; margin:0 20px; border-bottom:2px #f2f2f2 solid; }
+    .main_chat .text_message { font-size:1.6rem; max-width:100%; padding:2px 0; line-height:1.4; }
+    .main_chat .text_message.unread { color:#d10000; font-weight:700; }
+    .main_chat .text_message.read { color:#111; font-weight:400; }
+    .bubble-temp { opacity:.6; }
 
-      .list_friend_message .text_message {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 1.6rem;
-        max-width: 100%;
-        padding: 2px 0;
-      }
-      .text_message.focus {
-        font-weight: 700;
-      }
+    .compose_messsage { padding:12px 20px; display:flex; gap:8px; width:100%; max-width:100%; }
+    .text-input { margin-top:8px; resize:vertical; flex-grow:1; max-width:100%; border:1px #f2f2f2 solid; padding:8px 12px; font-size:1.6rem; font-family:"Arial"; height:48px; }
+  </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
 
-      .chat_container {
-        width: 100%;
-        min-height: 658px;
-        border: 2px #f2f2f2 solid;
-      }
+<div class="header">
+  <div class="main-content">
+    <div class="body">
+      <div class="chat_area">
+        <!-- Left -->
+        <div class="chat_bar">
+          <div class="message_btn">
+            <ul>
+              <li class="inbox_btn" id="btn-inbox">
+                <span class="ms lg primary">inbox</span>
+                <span class="focus">Inbox</span>
+                <span id="inbox-badge" class="badge hide">0</span>
+              </li>
+            </ul>
+          </div>
 
-      .message_header {
-        padding: 0 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 48px;
-        background-color: var(--primary-color);
-      }
-      .message_header .info {
-        color: white;
-        font-size: 1.6rem;
-      }
-      .message_header .info i {
-        font-weight: 700;
-      }
-
-      .message_controller {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: #fff;
-      }
-
-      .main_chat {
-        height: 530px;
-        overflow-y: auto;
-      }
-      .main_chat ul {
-        margin-top: 12px;
-        display: flex;
-        flex-direction: column;
-      }
-      .main_chat ul li {
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-        padding: 8px 0 24px;
-        margin: 0 20px;
-        border-bottom: 2px #f2f2f2 solid;
-      }
-      .main_chat .text_message {
-        font-size: 1.6rem;
-        max-width: 100%;
-        padding: 2px 0;
-        line-height: 1.4;
-      }
-
-      .compose_messsage {
-        padding: 12px 20px;
-        display: flex;
-        gap: 8px;
-        width: 100%;
-        max-width: 100%;
-      }
-      .text-input {
-        margin-top: 8px;
-        resize: vertical;
-        flex-grow: 1;
-        max-width: 100%;
-        border: 1px #f2f2f2 solid;
-        padding: 8px 12px;
-        font-size: 1.6rem;
-        font-family: "Arial";
-        height: 48px;
-      }
-
-      .preview-container {
-        margin-left: 92px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .preview-wrapper {
-        margin-top: 10px;
-        position: relative;
-        display: inline-block;
-      }
-      .preview-image {
-        max-width: 80px;
-        max-height: 80px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-      .remove-image-btn {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        background-color: red;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        font-size: 14px;
-        cursor: pointer;
-      }
-
-      .search_member {
-        margin-left: 92px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .search_member span {
-        font-size: 1.6rem;
-      }
-      .search_member_btn {
-        position: relative;
-      }
-      .search_member_btn input {
-        padding-left: 28px;
-        height: 28px;
-        font-size: 1.4rem;
-      }
-      .search_member_btn .ms {
-        position: absolute;
-        left: 4px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    </style>
-  </head>
-  <body>
-    <div th:replace="~{fragments/header :: header}"></div>
-
-    <div class="header">
-      <div class="main-content">
-        <div class="body">
-          <div class="chat_area">
-            <!-- Left column -->
-            <div class="chat_bar">
-              <div class="message_btn">
-                <ul>
-                  <li class="inbox_btn">
-                    <span class="ms lg primary">inbox</span>
-                    <span class="focus">Inbox</span>
-                  </li>
-                  <li class="unread_btn">
-                    <span class="ms lg">mark_email_unread</span>
-                    <span>Unread</span>
-                  </li>
-                </ul>
+          <div class="message_util">
+            <div class="action_group">
+              <div class="action" id="btn-new-message" title="Chọn người nhận để bắt đầu chat">
+                <span class="ms">chat</span><span class="txt">New message</span>
               </div>
-
-              <div class="message_util">
-                <div class="new_message">
-                  <span class="ms">add</span>
-                  <span class="txt">New message</span>
-                </div>
-                <div class="search_message">
-                  <span class="ms">search</span>
-                </div>
-              </div>
-
-              <div class="list_friend_message">
-                <ul></ul>
+              <div class="action" id="btn-add-friend" title="Gửi lời mời kết bạn">
+                <span class="ms">person_add</span><span class="txt">Add friend</span>
               </div>
             </div>
+            <div class="action" id="btn-refresh" title="Làm mới"><span class="ms">refresh</span></div>
+          </div>
 
-            <!-- Right column -->
-            <div class="chat_box">
-              <div class="chat_container">
-                <div class="message_header">
-                  <span class="info">Nhắn tin tới <i>Nguyễn Việt Huy</i></span>
-                  <div class="message_controller">
-                    <span class="ms">person_add</span>
-                    <span class="ms">block</span>
-                    <span class="ms">ink_eraser</span>
-                  </div>
-                </div>
+          <!-- Pending requests -->
+          <div class="panel" id="panel-pending">
+            <div class="panel_header">
+              <div class="title">Lời mời kết bạn</div>
+              <span id="pending-badge" class="badge hide">0</span>
+            </div>
+            <div class="panel_body"><ul id="pending-list"></ul></div>
+          </div>
 
-                <div class="main_chat">
-                  <ul>
-                    <li>
-                      <div class="avatar" data-name="Nguyễn Việt Huy"></div>
-                      <div class="message_content">
-                        <div class="message_row1">
-                          <span class="fullname">Nguyễn Việt Huy</span>
-                          <span class="message_sent_date">Nov 18, 2024</span>
-                        </div>
-                        <span class="text_message">
-                          Hey there! Just a little reminder that today is a perfect day to embrace new challenges and
-                          let your creativity shine.
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+          <!-- Friends -->
+          <div class="list_friend_message"><ul id="friend-list"></ul></div>
+        </div>
 
-                <div class="search_member" style="display: none">
-                  <span>Gửi đến: </span>
-                  <div class="search_member_btn">
-                    <input type="text" id="searchInput" />
-                    <span class="ms">search</span>
-                  </div>
-                </div>
-
-                <div class="preview-container" id="preview-container"></div>
-
-                <div class="compose_messsage">
-                  <div class="avatar" data-name="[[${session.username}]]"></div>
-                  <textarea
-                    class="text-input"
-                    id="messageInput"
-                    placeholder="Viết tin nhắn của bạn..."
-                    onkeydown="sendOnEnter(event)"
-                  ></textarea>
-
-                  <!-- icon chọn ảnh -->
-                  <span class="ms" onclick="document.getElementById('file-input').click()">image</span>
-                  <input
-                    type="file"
-                    id="file-input"
-                    style="display: none"
-                    accept="image/*"
-                    multiple
-                    onchange="previewImages(event)"
-                  />
-                </div>
-              </div>
+        <!-- Right -->
+        <div class="chat_box">
+          <div class="chat_container">
+            <div class="message_header">
+              <span class="info">Nhắn tin tới <i id="peer-label">Chưa chọn</i></span>
+            </div>
+            <div class="main_chat"><ul id="chat-ul"></ul></div>
+            <div class="compose_messsage">
+              <div class="avatar" data-name="[[${session.username}]]"></div>
+              <textarea class="text-input" id="messageInput" placeholder="Viết tin nhắn của bạn..." onkeydown="sendOnEnter(event)"></textarea>
+              <span class="ms" title="(tính năng ảnh — optional)">image</span>
             </div>
           </div>
         </div>
-      </div>
+      </div> <!-- /chat_area -->
     </div>
+  </div>
+</div>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
-    <script th:src="@{/js/jquery3.6.0.js}"></script>
-    <script th:inline="javascript">
-      /*<![CDATA[*/
-      // Lấy username từ session (Thymeleaf)
-      var sender = /*[[${session.username}]]*/ "";
+<!-- SockJS + STOMP -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script th:src="@{/js/jquery3.6.0.js}"></script>
 
-      // 1) Đặt avatar placeholder (DiceBear) cho mọi .avatar nếu có data-name
-      document.querySelectorAll(".avatar").forEach((el) => {
-        const name = el.getAttribute("data-name") || sender || "Guest";
-        const url = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
-          name
-        )}&backgroundType=solid&backgroundColor=cad2d2`;
-        // Nếu chưa có background-image thì set
-        const styleBg = (el.style.backgroundImage || "").trim();
-        if (!styleBg || styleBg === "none") {
-          el.style.backgroundImage = `url('${url}')`;
-        }
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  // ===== Session username
+  var SENDER = /*[[${session.username}]]*/ "";
+
+  // ===== State
+  let CURRENT_PEER = null;
+  let FRIENDS = [];
+  let PENDING = [];
+  let UNREAD_MAP = new Map();   // username -> count
+  let LAST_TEXT_MAP = new Map();// username -> last text
+  let LAST_TIME_MAP = new Map();// username -> last time (ISO string)
+  let TEMP_MAP = new Map();     // clientMsgId -> <li> (temp bubble)
+
+  // ===== Utils
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
+      const r = Math.random()*16|0, v=c==='x'?r:(r&0x3|0x8); return v.toString(16);
+    });
+  }
+  function applyAvatar(el, name) {
+    const n = name || "Guest";
+    const url = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(n)}&backgroundType=solid&backgroundColor=cad2d2`;
+    el.style.backgroundImage = `url('${url}')`;
+  }
+  document.querySelectorAll(".avatar").forEach(el => applyAvatar(el, el.getAttribute("data-name") || SENDER));
+
+  function escapeHtml(s){return (s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));}
+  function formatDateTime(ts){ try{const d=new Date(ts); if(!isNaN(d)) return d.toLocaleString();}catch{} return ts||"";}
+
+  async function apiGet(url){
+    const r=await fetch(url,{credentials:'same-origin'});
+    if(!r.ok) throw new Error(url+' '+r.status);
+    return r.json();
+  }
+  async function apiPost(url){
+    const r=await fetch(url,{method:'POST',credentials:'same-origin'});
+    if(!r.ok) throw new Error(url+' '+r.status);
+    return r.text();
+  }
+
+  function scrollToBottom(){
+    const main=document.querySelector('.main_chat'); main.scrollTop=main.scrollHeight;
+  }
+
+  function updateInboxBadge(){
+    const total=[...UNREAD_MAP.values()].reduce((a,b)=>a+b,0);
+    const badge=document.getElementById('inbox-badge');
+    if(total>0){ badge.textContent=total; badge.classList.remove('hide'); } else { badge.classList.add('hide'); }
+  }
+
+  // ===== STOMP
+  var stompClient=null;
+  function connectWs(){
+    const socket=new SockJS('/ws');
+    stompClient=Stomp.over(socket);
+    stompClient.debug=null;
+    stompClient.connect({}, frame=>{
+      stompClient.subscribe('/user/queue/messages', payload=>{
+        try{
+          const msg=JSON.parse(payload.body);
+          onStompMessage(msg);
+        }catch(e){ console.log(payload.body); }
       });
+      stompClient.subscribe('/user/queue/friends', payload=>{
+        try{ onFriendEvent(JSON.parse(payload.body)); }catch(e){ console.log(payload.body); }
+      });
+    }, err=>console.error('STOMP error', err));
+  }
+  async function onFriendEvent(evt){
+    // evt = { type, from, to, at, note }
+    const t = evt.type;
 
-      // 2) WebSocket (raw) – chỉ giữ nguyên như bạn đang dùng
-      const ws = new WebSocket(`ws://localhost:8080/chat?username=${encodeURIComponent(sender)}`);
+    switch(t){
+      case 'REQUEST_RECEIVED':
+        // Có lời mời mới -> push vào PENDING & render ngay
+        if(!PENDING.includes(evt.from)) PENDING.push(evt.from);
+        renderPending();
+        // badge Inbox cập nhật
+        updateInboxBadge();
+        // optional: popup
+        // alert(`${evt.from} đã gửi lời mời kết bạn`);
+        break;
 
-      ws.onopen = () => console.log("WS connected");
-      ws.onmessage = (e) => {
-        // TODO: parse và append ra UI của bạn
-        try {
-          const msg = JSON.parse(e.data);
-          console.log("recv:", msg);
-        } catch {
-          console.log("recv (text):", e.data);
+      case 'REQUEST_ACCEPTED':
+        // Ai đó chấp nhận -> đảm bảo có trong FRIENDS, xoá pending nếu còn
+        if(!FRIENDS.includes(evt.from)) FRIENDS.push(evt.from);
+        PENDING = PENDING.filter(u => u !== evt.from);
+        await refreshLastMessages();
+        renderPending();
+        renderFriendList();
+        // optional: alert(`Bạn và ${evt.from} đã trở thành bạn bè`);
+        break;
+
+      case 'REQUEST_DECLINED':
+        // bị từ chối -> chỉ cleanup (tuỳ chiều sự kiện bạn gửi)
+        PENDING = PENDING.filter(u => u !== evt.from);
+        renderPending();
+        break;
+
+      case 'UNFRIENDED':
+        // bị hủy bạn
+        FRIENDS = FRIENDS.filter(u => u !== evt.from);
+        renderFriendList();
+        if(CURRENT_PEER === evt.from){
+          CURRENT_PEER = null;
+          document.getElementById('peer-label').textContent = 'Chưa chọn';
+          document.getElementById('chat-ul').innerHTML = '';
         }
+        break;
+
+      case 'BLOCKED':
+      case 'UNBLOCKED':
+        // Tùy ý xử lý UI
+        break;
+    }
+  }
+
+  function stompSend(toUsername, text, clientMsgId){
+    if(!stompClient || !stompClient.connected) return;
+    const payload={ receiver: toUsername, content: text, clientMsgId: clientMsgId };
+    stompClient.send('/app/chat.private', {}, JSON.stringify(payload));
+  }
+
+  // ===== Rendering chat bubbles
+  function createBubble({id, sender, content, timestamp, mine, read, clientMsgId, isTemp}){
+    const li=document.createElement('li');
+    if(mine) li.style.flexDirection='row-reverse';
+    if(isTemp) li.classList.add('bubble-temp');
+    if(clientMsgId) li.dataset.clientId=clientMsgId;
+    if(id) li.dataset.msgId=id;
+
+    const av=document.createElement('div');
+    av.className='avatar';
+    applyAvatar(av, mine? SENDER : sender);
+
+    const contentWrap=document.createElement('div');
+    contentWrap.className='message_content';
+    if(mine) contentWrap.style.alignItems='flex-end';
+
+    const row1=document.createElement('div');
+    row1.className='message_row1';
+    row1.innerHTML=`${mine?'':`<span class="fullname">${escapeHtml(sender)}</span>`}
+                    <span class="message_sent_date">${formatDateTime(timestamp)}</span>`;
+
+    const textEl=document.createElement('span');
+    textEl.className='text_message '+(read?'read':'unread');
+    textEl.textContent=content||'';
+
+    contentWrap.appendChild(row1);
+    contentWrap.appendChild(textEl);
+
+    li.appendChild(av);
+    li.appendChild(contentWrap);
+    return li;
+  }
+
+  function appendBubble(args){
+    const ul=document.getElementById('chat-ul');
+    const li=createBubble(args);
+    ul.appendChild(li);
+    if(args.isTemp && args.clientMsgId){
+      TEMP_MAP.set(args.clientMsgId, li);
+    }
+    return li;
+  }
+
+  function replaceTempBubble(clientMsgId, serverMsg){
+    const tempLi=TEMP_MAP.get(clientMsgId);
+    if(!tempLi) return false;
+    const newLi=createBubble({
+      id: serverMsg.id,
+      sender: serverMsg.sender,
+      content: serverMsg.content,
+      timestamp: serverMsg.createdAt, // <- strictly createdAt
+      mine: serverMsg.sender===SENDER,
+      read: true,
+      clientMsgId: null,
+      isTemp: false
+    });
+    tempLi.replaceWith(newLi);
+    TEMP_MAP.delete(clientMsgId);
+    return true;
+  }
+
+  // ===== Incoming STOMP handling
+  function onStompMessage(msg){
+    const from=msg.sender;
+    const to=msg.receiver;
+    const mine=(from===SENDER);
+    const other=mine? to : from;
+
+    // If this is echo of my temp message -> replace temp and stop.
+    if(mine && msg.clientMsgId && replaceTempBubble(msg.clientMsgId, msg)){
+      LAST_TEXT_MAP.set(other, msg.content||'');
+      LAST_TIME_MAP.set(other, msg.createdAt||new Date().toISOString());
+      renderFriendList();
+      scrollToBottom();
+      return;
+    }
+
+    // Update last message/time
+    LAST_TEXT_MAP.set(other, msg.content||'');
+    LAST_TIME_MAP.set(other, msg.createdAt||new Date().toISOString());
+
+    // Unread count if not active thread
+    if(!mine && CURRENT_PEER !== from){
+      UNREAD_MAP.set(from, (UNREAD_MAP.get(from)||0)+1);
+      updateInboxBadge();
+      renderFriendList();
+    }
+
+    // Show bubble if relevant thread (or no peer chosen yet)
+    if(!CURRENT_PEER || from===CURRENT_PEER || to===CURRENT_PEER){
+      appendBubble({
+        id: msg.id,
+        sender: from,
+        content: msg.content,
+        timestamp: msg.createdAt, // <- strictly createdAt
+        mine,
+        read: mine || (CURRENT_PEER===from),
+        clientMsgId: null,
+        isTemp: false
+      });
+      scrollToBottom();
+    }
+
+    // If I am reading this thread, mark read & adjust counters
+    if(!mine && CURRENT_PEER===from){
+      apiPost(`/message/read?id=${msg.id}`).catch(()=>{});
+      const cur=UNREAD_MAP.get(from)||0;
+      UNREAD_MAP.set(from, Math.max(0, cur-1));
+      updateInboxBadge();
+      renderFriendList();
+    } else {
+      renderFriendList();
+    }
+  }
+
+  // ===== Conversations (history from DB)
+  async function loadConversation(peer){
+    if(!peer) return;
+    const ul=document.getElementById('chat-ul');
+    ul.innerHTML='';
+    try{
+      const list=await apiGet(`/message/conversation?userId=${encodeURIComponent(peer)}`);
+      list.forEach(m=>{
+        const mine = m.senderId===SENDER;
+        appendBubble({
+          id: m.id,
+          sender: m.senderId,
+          content: m.content,
+          timestamp: m.createdAt,     // <- strictly createdAt
+          mine,
+          read: mine ? true : (m.isRead===true),
+          clientMsgId: null,
+          isTemp:false
+        });
+        const other = mine ? m.receiverId : m.senderId;
+        LAST_TEXT_MAP.set(other, m.content||'');
+        LAST_TIME_MAP.set(other, m.createdAt || '');
+      });
+      scrollToBottom();
+    }catch(e){ console.error(e); }
+  }
+
+  async function markPeerMessagesRead(peer){
+    try{
+      const list=await apiGet('/message/unread');
+      const toRead=list.filter(m=>m.senderId===peer);
+      await Promise.all(toRead.map(m=>apiPost(`/message/read?id=${m.id}`)));
+    }catch(_){}
+    document.querySelectorAll('#chat-ul .text_message.unread').forEach(el=>{
+      el.classList.remove('unread'); el.classList.add('read');
+    });
+  }
+
+  async function selectPeer(username){
+    CURRENT_PEER=username;
+    document.getElementById('peer-label').textContent=CURRENT_PEER;
+    await loadConversation(CURRENT_PEER);     // <-- pulls from DB so reload keeps history
+    await markPeerMessagesRead(CURRENT_PEER);
+    await refreshAll(); // refresh badges/last lines
+  }
+
+  // ===== Friends & Pending
+  async function loadFriends(){
+    try{ const list=await apiGet('/friends/list'); FRIENDS=Array.isArray(list)?list:[]; }
+    catch(_){ FRIENDS=[]; }
+  }
+  async function loadPending(){
+    try{ const list=await apiGet('/friends/pending/received'); PENDING=Array.isArray(list)?list:[]; }
+    catch(_){ PENDING=[]; }
+  }
+  async function refreshUnread(){
+    UNREAD_MAP.clear();
+    try{
+      const list=await apiGet('/message/unread');
+      list.forEach(m=>{
+        const from=m.senderId;
+        UNREAD_MAP.set(from, (UNREAD_MAP.get(from)||0)+1);
+        if(!LAST_TEXT_MAP.has(from)) LAST_TEXT_MAP.set(from, m.content||'');
+        if(!LAST_TIME_MAP.has(from)) LAST_TIME_MAP.set(from, m.createdAt || new Date().toISOString());
+      });
+    }catch(_){}
+  }
+  async function refreshLastMessages(){
+    // Strategy: for each friend, get last message by pulling conversation and taking last element.
+    const tasks=FRIENDS.map(async u=>{
+      try{
+        const conv=await apiGet(`/message/conversation?userId=${encodeURIComponent(u)}`);
+        if(Array.isArray(conv) && conv.length>0){
+          const last=conv[conv.length-1];
+          LAST_TEXT_MAP.set(u, last.content||'');
+          LAST_TIME_MAP.set(u, last.createdAt || '');
+        }else{
+          if(!LAST_TEXT_MAP.has(u)) LAST_TEXT_MAP.set(u,'');
+          if(!LAST_TIME_MAP.has(u)) LAST_TIME_MAP.set(u,'');
+        }
+      }catch(_){
+        if(!LAST_TEXT_MAP.has(u)) LAST_TEXT_MAP.set(u,'');
+        if(!LAST_TIME_MAP.has(u)) LAST_TIME_MAP.set(u,'');
+      }
+    });
+    await Promise.all(tasks);
+  }
+
+  async function refreshAll(){
+    await Promise.all([loadFriends(), loadPending(), refreshUnread()]);
+    await refreshLastMessages();
+    renderPending();
+    renderFriendList();
+    updateInboxBadge();
+  }
+
+  function renderPending(){
+    const ul=document.getElementById('pending-list'); ul.innerHTML='';
+    const badge=document.getElementById('pending-badge');
+    if(PENDING.length>0){ badge.textContent=PENDING.length; badge.classList.remove('hide'); }
+    else{ badge.classList.add('hide'); }
+
+    PENDING.forEach(u=>{
+      const li=document.createElement('li');
+      const av=document.createElement('div'); av.className='avatar'; applyAvatar(av,u);
+      const name=document.createElement('div'); name.style.fontWeight='700'; name.textContent=u;
+
+      const actions=document.createElement('div'); actions.className='panel_actions';
+      const btnAccept=document.createElement('button'); btnAccept.className='btn primary'; btnAccept.textContent='Chấp nhận';
+      btnAccept.onclick=async ()=>{
+        try{ await apiPost(`/friends/accept?of=${encodeURIComponent(u)}`); await refreshAll(); alert('Đã chấp nhận kết bạn với '+u); }
+        catch(e){ alert('Không thể chấp nhận: '+e.message); }
       };
-      ws.onclose = () => console.log("WS closed");
+      const btnDecline=document.createElement('button'); btnDecline.className='btn'; btnDecline.textContent='Từ chối';
+      btnDecline.onclick=async ()=>{
+        try{ await apiPost(`/friends/decline?of=${encodeURIComponent(u)}`); await refreshAll(); }
+        catch(e){ alert('Không thể từ chối: '+e.message); }
+      };
 
-      function sendOnEnter(e) {
-        if (e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          const input = document.getElementById("messageInput");
-          const text = (input.value || "").trim();
-          if (!text) return;
-          ws.send(JSON.stringify({ sender, content: text, ts: Date.now() }));
-          input.value = "";
-        }
-      }
+      actions.appendChild(btnAccept); actions.appendChild(btnDecline);
+      li.appendChild(av); li.appendChild(name); li.appendChild(actions);
+      ul.appendChild(li);
+    });
+  }
 
-      function previewImages(e) {
-        /* để trống nếu chưa xử lý upload */
-      }
-      /*]]>*/
-    </script>
-  </body>
+  function renderFriendList(){
+    const ul=document.getElementById('friend-list'); ul.innerHTML='';
+
+    const friendsSorted=[...FRIENDS].sort((a,b)=>{
+      const ta=LAST_TIME_MAP.get(a)||'', tb=LAST_TIME_MAP.get(b)||'';
+      if(ta && tb) return (new Date(tb)-new Date(ta));
+      if(ta && !tb) return -1; if(!ta && tb) return 1;
+      return a.localeCompare(b,'vi',{sensitivity:'base'});
+    });
+
+    friendsSorted.forEach(u=>{
+      const li=document.createElement('li'); li.className='friend-item'; li.dataset.username=u;
+
+      const av=document.createElement('div'); av.className='avatar'; applyAvatar(av,u);
+      const right=document.createElement('div'); right.className='right';
+
+      const name=document.createElement('div'); name.className='friend-name'; name.textContent=u;
+
+      const last=document.createElement('div'); last.className='friend-last';
+      const unreadCount=UNREAD_MAP.get(u)||0;
+      const lastText=LAST_TEXT_MAP.get(u)||'';
+      last.textContent=lastText;
+      last.classList.add(unreadCount>0?'unread':'read');
+
+      right.appendChild(name); right.appendChild(last);
+      li.appendChild(av); li.appendChild(right);
+
+      if(unreadCount>0){ const b=document.createElement('span'); b.className='badge friend-unread-badge'; b.textContent=unreadCount; li.appendChild(b); }
+
+      li.addEventListener('click', ()=>selectPeer(u));
+      ul.appendChild(li);
+    });
+  }
+
+  // ===== Send from input (with temp bubble + clientMsgId)
+  function sendOnEnter(e){
+    if(e.key==="Enter" && !e.shiftKey){
+      e.preventDefault();
+      const input=document.getElementById("messageInput");
+      const text=(input.value||"").trim();
+      if(!text) return;
+      if(!CURRENT_PEER){ alert("Hãy chọn người nhận (chọn 1 bạn ở danh sách bên trái)."); return; }
+
+      const clientMsgId=uuidv4();
+      // show temp bubble immediately
+      appendBubble({
+        id:null, sender:SENDER, content:text, timestamp:new Date().toISOString(),
+        mine:true, read:true, clientMsgId:clientMsgId, isTemp:true
+      });
+      scrollToBottom();
+
+      // send via STOMP (server will echo with real id + createdAt + same clientMsgId)
+      stompSend(CURRENT_PEER, text, clientMsgId);
+
+      // update list preview
+      LAST_TEXT_MAP.set(CURRENT_PEER, text);
+      LAST_TIME_MAP.set(CURRENT_PEER, new Date().toISOString());
+      renderFriendList();
+
+      input.value="";
+    }
+  }
+
+  // ===== UI actions
+  document.getElementById('btn-new-message').addEventListener('click', async ()=>{
+    if(!FRIENDS.length){ alert('Bạn chưa có bạn bè. Hãy dùng "Add friend" để gửi lời mời.'); return; }
+    const listNames=FRIENDS.join(', ');
+    const peer=prompt('Chọn username người nhận trong danh sách: '+listNames);
+    if(peer && peer.trim()) await selectPeer(peer.trim());
+  });
+
+  document.getElementById('btn-add-friend').addEventListener('click', async ()=>{
+    const friend=prompt('Nhập username bạn muốn kết bạn:');
+    if(!friend || !friend.trim()) return;
+    try{
+      await apiPost(`/friends/request?to=${encodeURIComponent(friend.trim())}`);
+      alert('Đã gửi lời mời kết bạn tới '+friend.trim());
+      await refreshAll();
+    }catch(e){
+      console.error(e); alert('Người dùng không tồn tại');
+    }
+  });
+
+  document.getElementById('btn-refresh').addEventListener('click', refreshAll);
+
+  // ===== Init
+  connectWs();
+  refreshAll();
+  /*]]>*/
+</script>
+</body>
 </html>

@@ -14,19 +14,18 @@ public class MessageService {
     
     @Autowired
     private MessageRepository messageRepository;
-    
+
     @Transactional
     public Message sendMessage(String senderId, String receiverId, String content) {
         Message message = new Message();
         message.setSenderId(senderId);
         message.setReceiverId(receiverId);
         message.setContent(content);
-        message.setTimestamp(LocalDateTime.now());
         message.setIsRead(false);
-        
+        message.setCreatedAt(LocalDateTime.now());
         return messageRepository.save(message);
     }
-    
+
     public List<Message> getMessagesByUserId(String userId) {
         return messageRepository.findMessagesByUserId(userId);
     }
