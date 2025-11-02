@@ -145,18 +145,34 @@ CREATE TABLE IF NOT EXISTS Notifications (
 -- =============================================
 -- 7. Bảng Friendships (Quan hệ bạn bè)
 -- =============================================
-CREATE TABLE IF NOT EXISTS Friendships (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id VARCHAR(20) NOT NULL,
-    friend_id VARCHAR(20) NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(username) ON DELETE CASCADE,
-    FOREIGN KEY (friend_id) REFERENCES Users(username) ON DELETE CASCADE,
-    UNIQUE KEY unique_friendship (user_id, friend_id),
-    INDEX idx_user (user_id),
-    INDEX idx_friend (friend_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- cap nhat bang moi
+-- cap nhat bang moi
+-- cap nhat bang moi
+-- cap nhat bang moi
+
+create table friendships
+(
+    id                  int auto_increment
+        primary key,
+    created_at          datetime(6)  null,
+    friend_id           varchar(20)  not null,
+    last_interaction_at datetime(6)  null,
+    requested_by        varchar(20)  null,
+    responded_at        datetime(6)  null,
+    status              varchar(20)  not null,
+    u_max               varchar(255) null,
+    u_min               varchar(255) null,
+    user_id             varchar(20)  not null,
+    constraint uq_friendships_unordered
+        unique (u_min, u_max)
+);
+
+create index idx_friendships_status_friend
+    on friendships (friend_id, status);
+
+create index idx_friendships_status_user
+    on friendships (user_id, status);
+
 
 -- =============================================
 -- DỮ LIỆU MẪU (Sample Data)

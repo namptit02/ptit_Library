@@ -7,17 +7,12 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(
-		name = "Friendships",
-		indexes = {
-				@Index(name = "idx_friendships_status_user", columnList = "user_id,status"),
-				@Index(name = "idx_friendships_status_friend", columnList = "friend_id,status")
-		},
-		uniqueConstraints = {
-				@UniqueConstraint(name = "uq_friendships_unordered", columnNames = {"u_min","u_max"})
-		}
+		name = "Friendships"
 )
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Friendship {
 
@@ -48,10 +43,4 @@ public class Friendship {
 
 	@Column(name = "last_interaction_at")
 	private Timestamp lastInteractionAt;
-
-	@Column(name = "u_min", insertable = false, updatable = false)
-	private String uMin;
-
-	@Column(name = "u_max", insertable = false, updatable = false)
-	private String uMax;
 }
